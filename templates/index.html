@@ -56,45 +56,32 @@
         //输出版本号
         lay('#version').html(layui.v);
 
-        //数据
-        table.render({
+        var tableIns = table.render({
           elem: '#demo'
+          , url: "http://127.0.0.1:8080/GetCurDirInfo"
           , page: false
           , cols: [[ //表头
-            { fixed: 'left', field: 'id', hide:true}
+            { fixed: 'left', field: 'id', hide: true }
             , { field: 'filename', title: '文件名', sort: true }
-            , { field: 'size', title: '大小', sort: true }
+            , { field: 'size', title: '大小'}
             , { field: 'modtime', title: '修改日期', sort: true }
             , { field: 'type', title: '类型', sort: true }
             , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
-          ]]
-          , data: [
-            {
-              "filename": "test.exe",
-              "size": "13kb",
-              "modtime": "2022-01-07",
-              "type": "文件夹"
-            },
-            {
-              "filename": "test.exe",
-              "size": "13kb",
-              "modtime": "2022-01-07",
-              "type": "文件夹"
-            },
-            {
-              "filename": "test.exe",
-              "size": "13kb",
-              "modtime": "2022-01-07",
-              "type": "文件夹"
-            }
-          ],
-        });
+          ]],
+        });      
 
         //触发事件
         util.event('test-active', {
           'test-request': function () {
-            fetch("http://127.0.0.1:8080").then(response => response.json())
-              .then(data => console.log(data))
+            fetch("http://127.0.0.1:8080/GetCurDirInfo").then(response => response.json())
+              .then((data) =>{
+                console.log(data);
+                tdata.filename = data.filename;
+                tdata.size = data.size;
+                tdata.modtime = data.modtime;
+                tdata.type = data.type;
+              }
+              )
               .catch(e => console.log("Oops, error", e))
           },
         });

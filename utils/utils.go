@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"file-server/storage"
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 func IsPathExist(filePath string) bool {
@@ -24,19 +26,47 @@ func CreatDir(dirPath string) {
 	}
 }
 
-// 获取指定目录下的文件和目录(仅当前目录)
-func GetFilesAndDirs(dirPth string) (files []string, dirs []string, err error) {
+func SuitableDisplaySize(size int64) string {
+	if size > (1 << 30) {
+		return strconv.FormatInt(size>>30, 10) + "GB"
+	} else if size > (1 << 20) {
+		return strconv.FormatInt(size>>20, 10) + "MB"
+	} else if size > (1 << 10) {
+		return strconv.FormatInt(size>>10, 10) + "KB"
+	} else {
+		return strconv.FormatInt(size, 10) + "B"
+	}
+}
+
+// 获取指定目录下的文件信息(仅当前目录)
+func GetFilesInfo(dirPth string) (fis []storage.FileInfo, err error) {
 	dir, err := os.ReadDir(dirPth)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	for _, fi := range dir {
-		fullPath := filepath.Join(dirPth, fi.Name())
-		if fi.IsDir() {
-			dirs = append(dirs, fullPath)
+	fGetFileType := func(cond bool) string {
+		if cond {
+			return "文件夹"
 		} else {
-			files = append(files, fullPath)
+			return "文件"
 		}
 	}
-	return files, dirs, nil
+	fGetSize := func(size int64) string {
+		if size == 0 {
+			return ""
+		} else {
+			return SuitableDisplaySize(size)
+		}
+	}
+	var fi storage.FileInfo
+	for _, de := range dir {
+		fi.FileName = de.Name()
+		fi.FileFullPath = filepath.Join(dirPth, de.Name())
+		fi.Type = fGetFileType(de.IsDir())
+		info, _ := de.Info()
+		fi.ModTime = info.ModTime().String()
+		fi.Size = fGetSize(info.Size())
+		fis = append(fis, fi)
+	}
+	return fis, nil
 }

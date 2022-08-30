@@ -4,7 +4,7 @@ import (
 	"context"
 	"embed"
 	"file-server/middleware"
-	"file-server/routers"
+	"file-server/router"
 	"io/fs"
 	"log"
 	"net/http"
@@ -30,7 +30,7 @@ func main() {
 	// gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery(), middleware.Recorder(), middleware.Cors())
-	routers.Init(r)
+	router.Init(r)
 	srv := &http.Server{
 		Addr:    ":8080",
 		Handler: r,
