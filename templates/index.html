@@ -10,27 +10,39 @@
 
 <body>
 
-  <div class="layui-container">
-    <div class="layui-progress" style="margin: 15px 0 30px;">
-      <div class="layui-progress-bar" lay-percent="100%"></div>
+  <div class="layui-container layui-panel" style="margin-top: 30px;">
+
+    <div style="margin-top: 30px;">
+      <span class="layui-breadcrumb" lay-filter="demo1">
+        <a href="">首页</a>
+        <a href="">国际新闻</a>
+        <a href="">亚太地区</a>
+        <a><cite>正文</cite></a>
+      </span>
     </div>
 
-
-    <div class="layui-btn-container">
-      <button class="layui-btn" test-active="test-request"">发起请求</button>
+    <div class="layui-btn-container" style="margin-top: 30px;">
+      <button class="layui-btn" test-active="test-request">发起请求</button>
     </div>
 
     <blockquote class=" layui-elem-quote" style="margin-top: 30px;">
         <div class="layui-text">
           <ul>
-            <li>你当前预览的是：<span>layui-v<span id="version"></span></span></li>
+            <li>你当前预览的是：<span>fileserver-<span id="version"></span></span></li>
           </ul>
         </div>
-        </blockquote>
-    </div>
+    </blockquote>
+
+    <table id="demo" lay-filter="test" style="margin-top: 30px;"></table>
+
+  </div>
 
     <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
     <script src="layui/layui.js"></script>
+    <script type="text/html" id="barDemo">
+      <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
     <script>
       layui.use(function () {
         var layer = layui.layer
@@ -38,10 +50,45 @@
           , laypage = layui.laypage
           , element = layui.element
           , laydate = layui.laydate
+          , table = layui.table
           , util = layui.util;
 
         //输出版本号
         lay('#version').html(layui.v);
+
+        //数据
+        table.render({
+          elem: '#demo'
+          , page: false
+          , cols: [[ //表头
+            { fixed: 'left', field: 'id', hide:true}
+            , { field: 'filename', title: '文件名', sort: true }
+            , { field: 'size', title: '大小', sort: true }
+            , { field: 'modtime', title: '修改日期', sort: true }
+            , { field: 'type', title: '类型', sort: true }
+            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
+          ]]
+          , data: [
+            {
+              "filename": "test.exe",
+              "size": "13kb",
+              "modtime": "2022-01-07",
+              "type": "文件夹"
+            },
+            {
+              "filename": "test.exe",
+              "size": "13kb",
+              "modtime": "2022-01-07",
+              "type": "文件夹"
+            },
+            {
+              "filename": "test.exe",
+              "size": "13kb",
+              "modtime": "2022-01-07",
+              "type": "文件夹"
+            }
+          ],
+        });
 
         //触发事件
         util.event('test-active', {
@@ -50,6 +97,25 @@
               .then(data => console.log(data))
               .catch(e => console.log("Oops, error", e))
           },
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+          var data = obj.data;
+          if (obj.event === 'del') {
+            layer.confirm('确定删除文件？', function (index) {
+              layer.msg("删除文件");
+              layer.close(index);
+            });
+          } else if (obj.event === 'download') {
+            layer.msg("进行下载");
+          }
+        });
+
+        //监听导航点击
+        element.on('nav(demo1)', function (elem) {
+          console.log(elem)
+          layer.msg(elem.text());
         });
       });
     </script>
