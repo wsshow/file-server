@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>测试 - layui</title>
+  <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+
+<body>
+
+  <div class="layui-container">
+    <div class="layui-progress" style="margin: 15px 0 30px;">
+      <div class="layui-progress-bar" lay-percent="100%"></div>
+    </div>
+
+
+    <div class="layui-btn-container">
+      <button class="layui-btn" test-active="test-request"">发起请求</button>
+    </div>
+
+    <blockquote class=" layui-elem-quote" style="margin-top: 30px;">
+        <div class="layui-text">
+          <ul>
+            <li>你当前预览的是：<span>layui-v<span id="version"></span></span></li>
+          </ul>
+        </div>
+        </blockquote>
+    </div>
+
+    <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
+    <script src="layui/layui.js"></script>
+    <script>
+      layui.use(function () {
+        var layer = layui.layer
+          , form = layui.form
+          , laypage = layui.laypage
+          , element = layui.element
+          , laydate = layui.laydate
+          , util = layui.util;
+
+        //输出版本号
+        lay('#version').html(layui.v);
+
+        //触发事件
+        util.event('test-active', {
+          'test-request': function () {
+            fetch("http://127.0.0.1:8080").then(response => response.json())
+              .then(data => console.log(data))
+              .catch(e => console.log("Oops, error", e))
+          },
+        });
+      });
+    </script>
+</body>
+
+</html>
