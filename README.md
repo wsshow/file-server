@@ -12,3 +12,5 @@
 ```shell
 ./file-server
 ```
+## 效果图
+![file-server演示图](screenshot/file-server.png)
