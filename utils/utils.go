@@ -2,7 +2,6 @@ package utils
 
 import (
 	"file-server/storage"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -13,17 +12,24 @@ func IsPathExist(filePath string) bool {
 	return err == nil
 }
 
-func CreatDir(dirPath string) {
+func IsDir(filePath string) (bool, error) {
+	d, err := os.Stat(filePath)
+	if err != nil {
+		return false, err
+	}
+	return d.IsDir(), nil
+}
+
+func CreatDir(dirPath string) error {
 	err := os.MkdirAll(dirPath, os.ModePerm)
 	if err != nil {
-		log.Println("CreatDir error:", err)
-		return
+		return err
 	}
 	err = os.Chmod(dirPath, 0777)
 	if err != nil {
-		log.Println("Chmod error:", err)
-		return
+		return err
 	}
+	return nil
 }
 
 func SuitableDisplaySize(size int64) string {
