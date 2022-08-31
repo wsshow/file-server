@@ -8,4 +8,6 @@ import (
 
 func Init(r *gin.Engine) {
 	r.GET("/BackToRootPath", controller.BackToRootPath())
+	r.GET("/BackToPrevPath", controller.BackToPrevPath())
+	r.GET("/JoinNextPath", controller.JoinNextPath())
 }
