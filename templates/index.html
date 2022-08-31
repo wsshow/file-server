@@ -13,92 +13,133 @@
   <div class="layui-container layui-panel" style="margin-top: 30px;">
 
     <div style="margin-top: 30px;">
-      <span class="layui-breadcrumb" lay-filter="demo1">
-        <a href="">根目录</a>
-        <a><cite>正文</cite></a>
+      <span class="layui-breadcrumb layui-hide" lay-filter="demo1">
+        <a>根目录</a>
+        <span id="nav"></span>
       </span>
     </div>
 
+    
     <div class="layui-btn-container" style="margin-top: 30px;">
-      <button class="layui-btn" test-active="test-request">返回</button>
-      <button class="layui-btn" test-active="test-request">上传文件</button>
-      <button class="layui-btn" test-active="test-request">上传文件</button>
+      <button class="layui-btn" test-active="back_to_root_path">
+        <i class="layui-icon layui-icon-home"></i> 返回根目录</button>
+      <button class="layui-btn" test-active="back_to_prev_path">
+        <i class="layui-icon layui-icon-prev"></i> 返回</button>
+      <button class="layui-btn" test-active="upload_file">
+        <i class="layui-icon layui-icon-upload"></i> 上传文件</button>
+      <button class="layui-btn" test-active="zip_and_download">
+        <i class="layui-icon layui-icon-download-circle"></i> 压缩并下载当前目录</button>
+      <button class="layui-btn layui-hide" test-active="create_folder">新建文件夹</button>
+      <button class="layui-btn layui-hide" test-active="create_file">新建文件</button>
+      <button class="layui-btn layui-hide" test-active="add-nav">新增标签</button>
+      <button class="layui-btn" test-active="jmp_path">
+        <i class="layui-icon layui-icon-next"></i> 跳转到指定目录</button>
     </div>
 
-    <blockquote class="layui-elem-quote" style="margin-top: 30px;">
-        <div class="layui-text">
-          <ul>
-            <li>你当前预览的是：<span>fileserver-<span id="version"></span></span></li>
-          </ul>
-        </div>
-    </blockquote>
+    <input type="text" class="layui-input" placeholder="请输入跳转目录">
 
-    <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}" style="margin-top: 30px;"></table>
+    <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}"></table>
 
   </div>
 
-    <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
-    <script src="layui/layui.js"></script>
-    <script type="text/html" id="barDemo">
+  <script src="layui/layui.js"></script>
+  <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      <a class="layui-btn layui-btn-xs layui-hide" lay-event="edit">编辑</a>
     </script>
-    <script>
-      layui.use(function () {
-        var layer = layui.layer
-          , form = layui.form
-          , laypage = layui.laypage
-          , element = layui.element
-          , laydate = layui.laydate
-          , table = layui.table
-          , util = layui.util;
+  <script>
+    layui.use(function () {
+      var layer = layui.layer
+        , form = layui.form
+        , laypage = layui.laypage
+        , element = layui.element
+        , laydate = layui.laydate
+        , table = layui.table
+        , $ = layui.$
+        , util = layui.util;
 
-        //输出版本号
-        lay('#version').html(layui.v);
+      //输出版本号
+      lay('#version').html(layui.v);
 
-        var tableIns = table.render({
-          elem: '#demo'
-          , url: "http://127.0.0.1:8080/GetCurDirInfo"
-          , page: false
-          , cols: [[ //表头
-            { fixed: 'left', field: 'id', hide: true }
-            , { field: 'filename', title: '文件名', sort: true }
-            , { field: 'size', title: '大小'}
-            , { field: 'modtime', title: '修改日期', sort: true }
-            , { field: 'type', title: '类型', sort: true }
-            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
-          ]],
-        });      
+      var tableIns = table.render({
+        elem: '#demo'
+        , url: "http://127.0.0.1:8080/BackToRootPath"
+        , page: false
+        , autoSort: true
+        , initSort: { field: 'type', type: 'desc' }
+        , even: true
+        , skin: "line"
+        , cols: [[
+          { fixed: 'left', field: 'id', hide: true }
+          , { field: 'filename', title: '文件名', sort: true }
+          , { field: 'size', title: '大小' }
+          , { field: 'modtime', title: '修改日期', sort: true }
+          , { field: 'type', title: '类型', sort: true }
+          , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
+        ]],
+      });
 
-        //触发事件
-        util.event('test-active', {
-          'test-request': function () {
-            tableIns.reload({
-              url: "http://127.0.0.1:8080/GetCurDirInfo"
-            });
-          },
-        });
+      //触发事件
+      util.event('test-active', {
+        'back_to_root_path': function () {
+          tableIns.reload({
+            url: "http://127.0.0.1:8080/BackToRootPath",
+          });
+        },
+        'back_to_prev_path': function () {
+          tableIns.reload({
+            url: "http://127.0.0.1:8080/BackToPrevPath"
+          });
+        },
+        'upload_file': function () {
 
-        //监听行工具事件
-        table.on('tool(test)', function (obj) {
-          var data = obj.data;
-          if (obj.event === 'del') {
-            layer.confirm('确定删除文件？', function (index) {
-              layer.msg("删除文件");
-              layer.close(index);
-            });
-          } else if (obj.event === 'download') {
-            layer.msg("进行下载");
-          }
-        });
+        },
+        'zip_and_download': function () {
 
-        //监听导航点击
-        element.on('nav(demo1)', function (elem) {
-          console.log(elem)
-          layer.msg(elem.text());
+        },
+        'add-nav': function () {
+          $('#nav').append('<span lay-separator="">/</span><a href="">filename</a>')
+        },
+        'jmp_path': function () {
+          tableIns.reload({
+            url: "http://127.0.0.1:8080/JoinNextPath",
+            where: { curpath: "D:\\" },
+          });
+        }
+      });
+
+      //行单击
+      table.on('row(test)', function (obj) {
+        if (obj.data.type === "文件") {
+          layer.msg("暂不支持文件访问")
+          return
+        }
+        tableIns.reload({
+          url: "http://127.0.0.1:8080/JoinNextPath",
+          where: { curpath: obj.data.filefullpath },
         });
       });
-    </script>
+
+      //监听行工具事件
+      table.on('tool(test)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'del') {
+          layer.confirm('确定删除文件？', function (index) {
+            layer.msg("删除文件");
+            layer.close(index);
+          });
+        } else if (obj.event === 'download') {
+          layer.msg("进行下载");
+        }
+      });
+
+      //监听导航点击
+      element.on('nav(demo1)', function (elem) {
+        layer.msg(elem.text());
+      });
+    });
+  </script>
 </body>
 
 </html>
