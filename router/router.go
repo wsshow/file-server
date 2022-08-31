@@ -7,5 +7,5 @@ import (
 )
 
 func Init(r *gin.Engine) {
-	r.GET("/GetCurDirInfo", controller.GetCurDirInfo())
+	r.GET("/BackToRootPath", controller.BackToRootPath())
 }

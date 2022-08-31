@@ -14,18 +14,18 @@
 
     <div style="margin-top: 30px;">
       <span class="layui-breadcrumb" lay-filter="demo1">
-        <a href="">首页</a>
-        <a href="">国际新闻</a>
-        <a href="">亚太地区</a>
+        <a href="">根目录</a>
         <a><cite>正文</cite></a>
       </span>
     </div>
 
     <div class="layui-btn-container" style="margin-top: 30px;">
-      <button class="layui-btn" test-active="test-request">发起请求</button>
+      <button class="layui-btn" test-active="test-request">返回</button>
+      <button class="layui-btn" test-active="test-request">上传文件</button>
+      <button class="layui-btn" test-active="test-request">上传文件</button>
     </div>
 
-    <blockquote class=" layui-elem-quote" style="margin-top: 30px;">
+    <blockquote class="layui-elem-quote" style="margin-top: 30px;">
         <div class="layui-text">
           <ul>
             <li>你当前预览的是：<span>fileserver-<span id="version"></span></span></li>
@@ -33,7 +33,7 @@
         </div>
     </blockquote>
 
-    <table id="demo" lay-filter="test" style="margin-top: 30px;"></table>
+    <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}" style="margin-top: 30px;"></table>
 
   </div>
 
@@ -73,16 +73,9 @@
         //触发事件
         util.event('test-active', {
           'test-request': function () {
-            fetch("http://127.0.0.1:8080/GetCurDirInfo").then(response => response.json())
-              .then((data) =>{
-                console.log(data);
-                tdata.filename = data.filename;
-                tdata.size = data.size;
-                tdata.modtime = data.modtime;
-                tdata.type = data.type;
-              }
-              )
-              .catch(e => console.log("Oops, error", e))
+            tableIns.reload({
+              url: "http://127.0.0.1:8080/GetCurDirInfo"
+            });
           },
         });
 
