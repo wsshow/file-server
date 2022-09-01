@@ -70,7 +70,7 @@ func GetFilesInfo(dirPth string) (fis []storage.FileInfo, err error) {
 		fi.FileFullPath = filepath.Join(dirPth, de.Name())
 		fi.Type = fGetFileType(de.IsDir())
 		info, _ := de.Info()
-		fi.ModTime = info.ModTime().String()
+		fi.ModTime = info.ModTime().Format("2006-01-02 15:04:05")
 		fi.Size = fGetSize(info.Size())
 		fis = append(fis, fi)
 	}
