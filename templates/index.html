@@ -25,7 +25,7 @@
         <i class="layui-icon layui-icon-home"></i> 返回根目录</button>
       <button class="layui-btn" test-active="back_to_prev_path">
         <i class="layui-icon layui-icon-prev"></i> 返回</button>
-      <button class="layui-btn" test-active="upload_file">
+      <button class="layui-btn" id="upload_file" test-active="upload_file">
         <i class="layui-icon layui-icon-upload"></i> 上传文件</button>
       <button class="layui-btn" test-active="zip_and_download">
         <i class="layui-icon layui-icon-download-circle"></i> 压缩并下载当前目录</button>
@@ -56,11 +56,27 @@
         , element = layui.element
         , laydate = layui.laydate
         , table = layui.table
+        , upload = layui.upload
         , $ = layui.$
         , util = layui.util;
 
-      //输出版本号
-      lay('#version').html(layui.v);
+      //上传文件
+      var uploadInst = upload.render({
+        elem: '#upload_file'
+        , url: 'http://127.0.0.1:8080/UploadFiles'
+        , multiple: true
+        , done: function (res) {
+          layer.msg("文件上传完成")
+        }, 
+        allDone: function (obj) { //当文件全部被提交后，才触发
+          console.log(obj.total); //得到总文件数
+          console.log(obj.successful); //请求成功的文件数
+          console.log(obj.aborted); //请求失败的文件数
+        }
+        , error: function () {
+          layer.msg("文件上传失败")
+        }
+      });
 
       var tableIns = table.render({
         elem: '#demo'

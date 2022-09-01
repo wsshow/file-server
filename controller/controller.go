@@ -2,8 +2,10 @@ package controller
 
 import (
 	"file-server/utils"
+	"fmt"
 	"net/http"
 	"os"
+	"path"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,6 +54,22 @@ func BackToPrevPath() gin.HandlerFunc {
 
 func BackToRootPath() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		dir, _ := os.Getwd()
+		c.JSON(http.StatusOK, GetCurDirInfo(dir))
+	}
+}
+
+func UploadFiles() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var urls []string
+		form, _ := c.MultipartForm()
+		files := form.File["files"]
+		for _, file := range files {
+			dst := path.Join("./static", file.Filename)
+			urls = append(urls, dst)
+			c.SaveUploadedFile(file, dst)
+		}
+		fmt.Println(urls)
 		dir, _ := os.Getwd()
 		c.JSON(http.StatusOK, GetCurDirInfo(dir))
 	}
