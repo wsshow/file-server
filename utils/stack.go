@@ -24,6 +24,15 @@ func (stack *Stack) Pop() interface{} {
 	return nil
 }
 
+func (stack *Stack) Contain(value interface{}) bool {
+	for e := stack.list.Front(); e != nil; e = e.Next() {
+		if e == value {
+			return true
+		}
+	}
+	return false
+}
+
 func (stack *Stack) Len() int {
 	return stack.list.Len()
 }

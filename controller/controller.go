@@ -48,6 +48,9 @@ func ReloadCurPath() gin.HandlerFunc {
 func BackToPrevPath() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		lastPath := historyOpPath.Pop()
+		for lastPath != nil && lastPath.(string) == currentPath {
+			lastPath = historyOpPath.Pop()
+		}
 		if lastPath == nil {
 			dir, _ := os.Getwd()
 			lastPath = dir
