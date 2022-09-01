@@ -19,7 +19,7 @@
       </span>
     </div>
 
-    
+
     <div class="layui-btn-container" style="margin-top: 30px;">
       <button class="layui-btn" test-active="back_to_root_path">
         <i class="layui-icon layui-icon-home"></i> 返回根目录</button>
@@ -63,15 +63,14 @@
       //上传文件
       var uploadInst = upload.render({
         elem: '#upload_file'
-        , url: 'http://127.0.0.1:8080/UploadFiles'
+        , url: 'http://127.0.0.1:8080/UploadFile'
         , multiple: true
-        , done: function (res) {
-          layer.msg("文件上传完成")
-        }, 
-        allDone: function (obj) { //当文件全部被提交后，才触发
-          console.log(obj.total); //得到总文件数
-          console.log(obj.successful); //请求成功的文件数
-          console.log(obj.aborted); //请求失败的文件数
+        , exts: 'xls|xlsx|csv|zip|pdf|doc|docx|png|jpeg|jpg|gif|log|txt'
+        , allDone: function (obj) {
+          layer.msg(`文件总数：${obj.total}\n成功数：, ${obj.successful}\n失败数：${obj.aborted}`)
+          tableIns.reload({
+            url: "http://127.0.0.1:8080/ReloadCurPath",
+          });
         }
         , error: function () {
           layer.msg("文件上传失败")
