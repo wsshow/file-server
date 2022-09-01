@@ -77,8 +77,7 @@ func UploadFile() gin.HandlerFunc {
 			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
 			return
 		}
-		dir, _ := os.Getwd()
-		dst := path.Join(dir, file.Filename)
+		dst := path.Join(currentPath, file.Filename)
 		err = c.SaveUploadedFile(file, dst)
 		if err != nil {
 			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
@@ -90,17 +89,40 @@ func UploadFile() gin.HandlerFunc {
 
 func UploadFiles() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var urls []string
 		form, _ := c.MultipartForm()
 		files := form.File["files"]
-		dir, _ := os.Getwd()
 		for _, file := range files {
 			fmt.Println(file.Filename)
-			dst := path.Join(dir, file.Filename)
-			urls = append(urls, dst)
+			dst := path.Join(currentPath, file.Filename)
 			c.SaveUploadedFile(file, dst)
 		}
-		fmt.Println(urls)
-		c.JSON(http.StatusOK, GetCurDirInfo(dir))
+		c.JSON(http.StatusOK, GetCurDirInfo(currentPath))
+	}
+}
+
+func DeleteFile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var param struct {
+			DeleteFilePath string `json:"delete_file_path,omitempty"`
+		}
+		if err := c.ShouldBindJSON(&param); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+			return
+		}
+		if !utils.IsPathExist(param.DeleteFilePath) {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(param.DeleteFilePath+" not found"))
+			return
+		}
+		if bOK, err := utils.IsDir(param.DeleteFilePath); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+			return
+		} else {
+			if bOK {
+				utils.RemoveDir(param.DeleteFilePath)
+			} else {
+				utils.RemoveFile(param.DeleteFilePath)
+			}
+		}
+		c.JSON(http.StatusOK, resp.Success(param.DeleteFilePath+" delete success"))
 	}
 }

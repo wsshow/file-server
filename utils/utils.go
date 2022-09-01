@@ -32,6 +32,14 @@ func CreatDir(dirPath string) error {
 	return nil
 }
 
+func RemoveFile(filePath string) error {
+	return os.Remove(filePath)
+}
+
+func RemoveDir(filePath string) error {
+	return os.RemoveAll(filePath)
+}
+
 func SuitableDisplaySize(size int64) string {
 	if size > (1 << 30) {
 		return strconv.FormatInt(size>>30, 10) + "GB"

@@ -41,7 +41,7 @@
     <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}"></table>
 
   </div>
-
+  <script src="axios/axios.min.js"></script>
   <script src="layui/layui.js"></script>
   <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
@@ -124,8 +124,8 @@
         }
       });
 
-      //行单击
-      table.on('row(test)', function (obj) {
+      //行双击
+      table.on('rowDouble(test)', function (obj) {
         if (obj.data.type === "文件") {
           layer.msg("暂不支持文件访问")
           return
@@ -140,8 +140,24 @@
       table.on('tool(test)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-          layer.confirm('确定删除文件？', function (index) {
-            layer.msg("删除文件");
+          layer.confirm(`确定删除 ${obj.data.filename} 文件？`, function (index) {
+            axios.delete('http://127.0.0.1:8080/DeleteFile', {
+              data: {
+                "delete_file_path": obj.data.filefullpath
+              }
+            })
+              .then(function (response) {
+                if (response.data.code == 0) {
+                  tableIns.reload({
+                    url: "http://127.0.0.1:8080/ReloadCurPath",
+                  });
+                } else {
+                  layer.msg(JSON.stringify(response.data));
+                }
+              })
+              .catch(function (error) {
+                layer.msg(JSON.stringify(error));
+              });
             layer.close(index);
           });
         } else if (obj.event === 'download') {
