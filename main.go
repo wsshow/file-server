@@ -5,12 +5,15 @@ import (
 	"embed"
 	"file-server/middleware"
 	"file-server/router"
+	"file-server/utils"
+	"flag"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -27,12 +30,16 @@ var template embed.FS
 
 func main() {
 	InitLogConfig()
-	// gin.SetMode(gin.ReleaseMode)
+	var uiPort, srvPort int
+	flag.IntVar(&uiPort, "up", 8080, "ui port")
+	flag.IntVar(&srvPort, "sp", 8081, "server port")
+	flag.Parse()
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery(), middleware.Recorder(), middleware.Cors())
 	router.Init(r)
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + strconv.Itoa(srvPort),
 		Handler: r,
 	}
 	//启动api服务
@@ -51,16 +58,17 @@ func main() {
 	engine.Use(gin.Recovery(), middleware.Recorder(), middleware.Cors())
 	engine.StaticFS("/", http.FS(fads))
 	srv2 := &http.Server{
-		Addr:    ":8081",
+		Addr:    ":" + strconv.Itoa(uiPort),
 		Handler: engine,
 	}
+	log.Printf("ui run(local):\thttp:\\\\127.0.0.1:%d\n", uiPort)
+	log.Printf("ui run(net):\thttp:\\\\%s:%d\n", utils.GetLocalIP(), uiPort)
 	//启动文件服务
 	go func() {
 		if err := srv2.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalln("srv2.ListenAndServe error:", err)
 		}
 	}()
-
 	log.Println("before capture signal. the number of goroutines: ", runtime.NumGoroutine())
 	C := make(chan os.Signal, 1)
 	signal.Notify(C, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)

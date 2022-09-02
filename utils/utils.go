@@ -2,6 +2,7 @@ package utils
 
 import (
 	"file-server/storage"
+	"net"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -87,4 +88,14 @@ func GetFilesInfo(dirPth string) (fis []storage.FileInfo, err error) {
 		fis = append(fis, fi)
 	}
 	return fis, nil
+}
+
+func GetLocalIP() string {
+	conn, err := net.Dial("udp", "8.8.8.8:8")
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	return localAddr.IP.String()
 }
