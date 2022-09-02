@@ -10,7 +10,10 @@
 
 ## 使用
 ```shell
-./file-server
+#直接运行（默认端口为：8080、8081）
+./fileserver
+#带参数运行（up：界面服务运行端口；sp：api服务运行端口）
+./fileserver -ui 8080 -sp 8081
 ```
 ## 效果图
 ![file-server演示图](screenshot/file-server.png)
