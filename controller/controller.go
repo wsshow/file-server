@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -136,7 +139,6 @@ func DownloadFile() gin.HandlerFunc {
 			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
 			return
 		}
-		fmt.Println(dfp.DownloadFilePath)
 		if !utils.IsPathExist(dfp.DownloadFilePath) {
 			c.JSON(http.StatusOK, resp.Failure().WithDesc(dfp.DownloadFilePath+" not found"))
 			return
@@ -146,5 +148,38 @@ func DownloadFile() gin.HandlerFunc {
 		} else {
 			c.Data(http.StatusOK, "application/octet-stream", bs)
 		}
+	}
+}
+
+func ZipAndDownloadFile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !utils.IsPathExist(currentPath) {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(currentPath+" not found"))
+			return
+		}
+		dstFile := currentPath + ".zip"
+		if err := utils.Zip(currentPath, dstFile); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+			return
+		}
+		if bs, err := utils.ReadAll(dstFile); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+		} else {
+			if err = utils.RemoveFile(dstFile); err != nil {
+				c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+				return
+			}
+			c.Data(http.StatusOK, "application/octet-stream", bs)
+		}
+	}
+}
+
+func GetCurFileName() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		filename := filepath.Base(currentPath)
+		if strings.ContainsAny(filename, ".\\") {
+			filename = time.Now().Format("20060102150405")
+		}
+		c.JSON(http.StatusOK, resp.Success(filename+".zip"))
 	}
 }

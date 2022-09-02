@@ -1,0 +1,59 @@
+
+-------------------------------------------------------------------------------
+
+/usr/share/clamav-testfiles/clam.tnef: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.ole.doc: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.odc.cpio: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.bin-le.cpio: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.impl.zip: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.ea06.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.ppt: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.bz2: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.arj: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.rtf: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.bz2.zip: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-yc.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam_IScab_int.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.bin-be.cpio: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.mbox.uu: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.sis: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam_cache_emax.tgz: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.7z: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.binhex: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-mew.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.mail: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-pespin.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-petite.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam_ISmsi_ext.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-fsg.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.newc.cpio: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.cab: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.html: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.mbox.base64: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe.szdd: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-upx.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-nsis.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-wwpack.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam_ISmsi_int.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.d64.zip: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.ea05.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam_IScab_ext.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.zip: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-aspack.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.pdf: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam-upack.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.exe: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.chm: Clamav.Test.File-6 FOUND
+/usr/share/clamav-testfiles/clam.tar.gz: Clamav.Test.File-6 FOUND
+
+----------- SCAN SUMMARY -----------
+Known viruses: 8691743
+Engine version: 0.103.2
+Scanned directories: 1
+Scanned files: 46
+Infected files: 44
+Data scanned: 14.02 MB
+Data read: 6.21 MB (ratio 2.26:1)
+Time: 61.785 sec (1 m 1 s)
+Start Date: 2021:09:18 07:39:12
+End Date:   2021:09:18 07:40:13
