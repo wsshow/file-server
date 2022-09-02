@@ -126,3 +126,25 @@ func DeleteFile() gin.HandlerFunc {
 		c.JSON(http.StatusOK, resp.Success(param.DeleteFilePath+" delete success"))
 	}
 }
+
+func DownloadFile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var dfp struct {
+			DownloadFilePath string `json:"download_file_path,omitempty"`
+		}
+		if err := c.ShouldBindJSON(&dfp); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+			return
+		}
+		fmt.Println(dfp.DownloadFilePath)
+		if !utils.IsPathExist(dfp.DownloadFilePath) {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(dfp.DownloadFilePath+" not found"))
+			return
+		}
+		if bs, err := utils.ReadAll(dfp.DownloadFilePath); err != nil {
+			c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+		} else {
+			c.Data(http.StatusOK, "application/octet-stream", bs)
+		}
+	}
+}

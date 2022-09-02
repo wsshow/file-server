@@ -32,6 +32,10 @@ func CreatDir(dirPath string) error {
 	return nil
 }
 
+func ReadAll(path string) ([]byte, error) {
+	return os.ReadFile(path)
+}
+
 func RemoveFile(filePath string) error {
 	return os.Remove(filePath)
 }

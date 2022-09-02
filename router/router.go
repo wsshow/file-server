@@ -13,5 +13,6 @@ func Init(r *gin.Engine) {
 	r.GET("/ReloadCurPath", controller.ReloadCurPath())
 	r.POST("/UploadFiles", controller.UploadFiles())
 	r.POST("/UploadFile", controller.UploadFile())
+	r.POST("/DownloadFile", controller.DownloadFile())
 	r.DELETE("/DeleteFile", controller.DeleteFile())
 }
