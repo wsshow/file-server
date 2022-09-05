@@ -1,4 +1,9 @@
-var urlRoot = "http://127.0.0.1:8080";
+var urlRoot;
+let server_addr = localStorage.getItem("fs_server_addr");
+if (!server_addr) {
+  window.location = "html/cs.html";
+}
+urlRoot = `http://${server_addr}`;
 var urlBackToRootPath = `${urlRoot}/BackToRootPath`;
 var urlBackToPrevPath = `${urlRoot}/BackToPrevPath`;
 var urlJoinNextPath = `${urlRoot}/JoinNextPath`;

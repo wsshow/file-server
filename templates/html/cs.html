@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连接地址</title>
+    <link href="../js/jBox/jBox.all.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-bg">
+        <div class="content">
+            <div class="title">
+                <h2>连接地址</h2>
+            </div>
+            <div class="form-box">
+                <div class="login-center">
+                    <span class="t-name">服务地址：</span>
+                    <input type="text" name="" id="address" class="inp" value="" placeholder="请输入您的连接地址">
+                </div>
+                <div class="login-button" id="btn-tologin">连接</div>
+            </div>
+        </div>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                background-image: linear-gradient(to bottom, #7A88FF, #7AFFAF);
+            }
+
+            .login-bg {
+                height: 100%;
+                position: relative;
+            }
+
+            .form-box {
+                margin-top: 15px;
+            }
+
+            .content {
+                position: absolute;
+                width: 320px;
+                height: 250px;
+                background: rgba(255, 255, 255, .9);
+                border-radius: 10px;
+                top: 50%;
+                left: 50%;
+                margin-left: -160px;
+                margin-top: -230px;
+                padding: 10px 20px;
+                box-sizing: border-box;
+                border: #00ACED 2px solid;
+            }
+
+            .title h2 {
+                font-size: 22px;
+                line-height: 60px;
+                color: #333;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .login-center {
+                height: 50px;
+                border-radius: 5px;
+                border: 1px solid #00ACED;
+                margin-bottom: 30px;
+                line-height: 50px;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+            .login-center .t-name {
+                font-size: 14px;
+                float: left;
+                height: 48px;
+                width: 72px;
+            }
+
+            .login-center .inp {
+                font-size: 14px;
+                float: left;
+                border: none;
+                background: transparent;
+                height: 48px;
+                width: 170px;
+                outline: none;
+            }
+
+            .login-button {
+                background-color: #1e90ff;
+                height: 50px;
+                border-radius: 5px;
+                font-size: 18px;
+                color: #fff;
+                text-align: center;
+                line-height: 50px;
+                cursor: pointer;
+                margin: 10px 0;
+            }
+
+            .login-button:active {
+                transform: scale(0.98);
+                box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+            }
+        </style>
+        <script src="../js/jQuery.js"></script>
+        <script src="../js/jBox/jBox.all.js"></script>
+        <script>
+            function ErrorShow(msg) {
+                new jBox('Notice', {
+                    content: msg,
+                    color: 'red',
+                });
+            }
+            $(() => {
+                let server_ip = localStorage.getItem("fs_server_addr");
+                if (server_ip) {
+                    $("#address").val(server_ip);
+                    return;
+                }
+            })
+            $('#btn-tologin').on('click', () => {
+                if (!$("#address").val()) {
+                    ErrorShow('请输入服务器地址');
+                    return;
+                }
+                localStorage.setItem("fs_server_addr", $("#address").val());
+                location.href = '../index.html';
+            })
+        </script>
+</body>
+
+</html>

@@ -20,13 +20,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+
+}
+
 func InitLogConfig() {
 	log.SetPrefix("[file-server] ")
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
 }
 
 //go:embed templates
-var template embed.FS
+var tmpl embed.FS
 
 func main() {
 	InitLogConfig()
@@ -34,6 +38,7 @@ func main() {
 	flag.IntVar(&uiPort, "up", 8080, "ui port")
 	flag.IntVar(&srvPort, "sp", 8081, "server port")
 	flag.Parse()
+
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery(), middleware.Recorder(), middleware.Cors())
@@ -49,7 +54,7 @@ func main() {
 		}
 	}()
 
-	fads, err := fs.Sub(template, "templates")
+	fads, err := fs.Sub(tmpl, "templates")
 	if err != nil {
 		log.Println("fs.Sub error:", err)
 		return
@@ -61,8 +66,9 @@ func main() {
 		Addr:    ":" + strconv.Itoa(uiPort),
 		Handler: engine,
 	}
-	log.Printf("ui run(local):\thttp:\\\\127.0.0.1:%d\n", uiPort)
-	log.Printf("ui run(net):\thttp:\\\\%s:%d\n", utils.GetLocalIP(), uiPort)
+	usingIP := utils.GetLocalIP()
+	log.Printf("ui run(net):\thttp:\\\\%s:%d\n", usingIP, uiPort)
+	log.Printf("server run(net):\thttp:\\\\%s:%d\n", usingIP, srvPort)
 	//启动文件服务
 	go func() {
 		if err := srv2.ListenAndServe(); err != nil && err != http.ErrServerClosed {

@@ -1,4 +1,5 @@
 fileserver.exe
 test
 *.log
+*.exe
 release

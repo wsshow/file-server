@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>测试 - layui</title>
-  <link rel="stylesheet" href="layui/css/layui.css">
+  <link rel="stylesheet" href="../layui/css/layui.css">
 </head>
 
 <body>
@@ -41,18 +41,15 @@
     <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}"></table>
 
   </div>
-  <script src="axios/axios.min.js"></script>
-  <script src="layui/layui.js"></script>
-  <script src="js/api.js"></script>
+  <script src="../axios/axios.min.js"></script>
+  <script src="../layui/layui.js"></script>
+  <script src="../js/api.js"></script>
   <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
       <a class="layui-btn layui-btn-xs layui-hide" lay-event="edit">编辑</a>
     </script>
   <script>
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      window.location = 'html/mobile.html';
-    }
     layui.use(function () {
       var layer = layui.layer
         , form = layui.form
@@ -94,8 +91,6 @@
           { fixed: 'left', field: 'id', hide: true }
           , { field: 'filename', title: '文件名', sort: true }
           , { field: 'size', title: '大小' }
-          , { field: 'modtime', title: '修改日期', sort: true }
-          , { field: 'type', title: '类型', sort: true }
           , { title: '操作', toolbar: '#barDemo' }
         ]],
       });
