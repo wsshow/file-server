@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"file-server/storage"
 	"file-server/utils"
 	"fmt"
 	"net/http"
@@ -16,6 +17,7 @@ import (
 var resp utils.Response
 var historyOpPath = utils.NewStack()
 var currentPath string = "."
+var curFis []storage.FileInfo
 
 func GetCurDirInfo(curPath string) utils.Response {
 	fis, err := utils.GetFilesInfo(curPath)
@@ -23,6 +25,7 @@ func GetCurDirInfo(curPath string) utils.Response {
 		return resp.Failure().WithDesc("获取当前文件夹信息失败")
 	}
 	currentPath = curPath
+	curFis = fis
 	return resp.Success(fis)
 }
 
@@ -39,6 +42,23 @@ func JoinNextPath() gin.HandlerFunc {
 		}
 		historyOpPath.Push(curpath)
 		c.JSON(http.StatusOK, GetCurDirInfo(curpath))
+	}
+}
+
+func GetMarkdown() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		for _, fi := range curFis {
+			if strings.HasSuffix(fi.FileFullPath, ".md") {
+				bs, err := utils.ReadAll(fi.FileFullPath)
+				if err != nil {
+					c.JSON(http.StatusOK, resp.Failure().WithDesc(err.Error()))
+					return
+				}
+				c.JSON(http.StatusOK, resp.Success(string(bs)))
+				return
+			}
+		}
+		c.JSON(http.StatusOK, resp.Failure())
 	}
 }
 

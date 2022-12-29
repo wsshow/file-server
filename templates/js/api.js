@@ -13,6 +13,7 @@ var urlUploadFile = `${urlRoot}/UploadFile`;
 var urlDownloadFile = `${urlRoot}/DownloadFile`;
 var urlZipAndDownloadFile = `${urlRoot}/ZipAndDownloadFile`;
 var urlGetCurFileName = `${urlRoot}/GetCurFileName`;
+var urlGetMarkdown = `${urlRoot}/GetMarkdown`;
 
 function ApiDeleteFile(filefullpath, tableIns) {
   axios
@@ -98,6 +99,36 @@ function ApiZipAndDownloadFile() {
         document.body.removeChild(elink);
       } else {
         navigator.msSaveBlob(blob, fileName);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+function ApiGetMarkdown() {
+  axios
+    .get(urlGetMarkdown)
+    .then((response) => {
+      if (response.data.code == 0) {
+        document.getElementById("markdown-panel").style.display = '';
+        var converter = new showdown.Converter({
+          tables: true,
+          omitExtraWLInCodeBlocks: true,
+          parseImgDimensions: true,
+          simplifiedAutoLink: true,
+          literalMidWordUnderscores: true,
+          tasklists: true,
+          ghCodeBlocks: true,
+          smoothLivePreview: true,
+          simplifiedAutoLink: true,
+          strikethrough: true,
+        });
+        document.getElementById("markdown").innerHTML = converter.makeHtml(
+          response.data.data
+        );
+      }else{
+        document.getElementById("markdown-panel").style.display = 'none';
       }
     })
     .catch(function (error) {

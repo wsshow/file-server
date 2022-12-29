@@ -10,6 +10,7 @@ func Init(r *gin.Engine) {
 	r.GET("/BackToRootPath", controller.BackToRootPath())
 	r.GET("/BackToPrevPath", controller.BackToPrevPath())
 	r.GET("/JoinNextPath", controller.JoinNextPath())
+	r.GET("/GetMarkdown", controller.GetMarkdown())
 	r.GET("/ReloadCurPath", controller.ReloadCurPath())
 	r.GET("/GetCurFileName", controller.GetCurFileName())
 	r.POST("/UploadFiles", controller.UploadFiles())

@@ -4,9 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>测试 - layui</title>
+  <title>fileserver</title>
   <link rel="stylesheet" href="layui/css/layui.css">
-</head>
+  <link rel="stylesheet" href="./css/md.css">
+</head> 
 
 <body>
 
@@ -41,6 +42,10 @@
     <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}"></table>
 
   </div>
+  <div id="markdown-panel" class="layui-container layui-panel" style="margin-top: 10px;">
+    <article id="markdown" class="markdown-body" style="margin-top: 20px;"></article>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/showdown/2.1.0/showdown.js"></script>
   <script src="axios/axios.min.js"></script>
   <script src="layui/layui.js"></script>
   <script src="js/api.js"></script>
@@ -48,7 +53,7 @@
       <a class="layui-btn layui-btn-xs" lay-event="download">下载</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
       <a class="layui-btn layui-btn-xs layui-hide" lay-event="edit">编辑</a>
-    </script>
+  </script>
   <script>
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       window.location = 'html/mobile.html';
@@ -100,17 +105,21 @@
         ]],
       });
 
+      ApiGetMarkdown();
+
       //触发事件
       util.event('test-active', {
         'back_to_root_path': function () {
           tableIns.reload({
             url: urlBackToRootPath,
           });
+          ApiGetMarkdown();
         },
         'back_to_prev_path': function () {
           tableIns.reload({
             url: urlBackToPrevPath
           });
+          ApiGetMarkdown();
         },
         'zip_and_download': function () {
           ApiZipAndDownloadFile()
@@ -123,19 +132,21 @@
             url: urlJoinNextPath,
             where: { curpath: $('#input-jmp-path').val() },
           });
+          ApiGetMarkdown();
         }
       });
 
       //行双击
       table.on('rowDouble(test)', function (obj) {
         if (obj.data.type === "文件") {
-          layer.msg("暂不支持文件访问")
-          return
+          layer.msg("暂不支持文件访问");
+          return;
         }
         tableIns.reload({
           url: urlJoinNextPath,
           where: { curpath: obj.data.filefullpath },
         });
+        ApiGetMarkdown();
       });
 
       //监听行工具事件
