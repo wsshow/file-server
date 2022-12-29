@@ -102,10 +102,11 @@
           , { field: 'modtime', title: '修改日期', sort: true }
           , { field: 'type', title: '类型', sort: true }
           , { title: '操作', toolbar: '#barDemo' }
-        ]],
+        ]]
+        , done: function (res, curr, count) {
+          ApiGetMarkdown();
+        }
       });
-
-      ApiGetMarkdown();
 
       //触发事件
       util.event('test-active', {
@@ -113,13 +114,11 @@
           tableIns.reload({
             url: urlBackToRootPath,
           });
-          ApiGetMarkdown();
         },
         'back_to_prev_path': function () {
           tableIns.reload({
-            url: urlBackToPrevPath
+            url: urlBackToPrevPath,
           });
-          ApiGetMarkdown();
         },
         'zip_and_download': function () {
           ApiZipAndDownloadFile()
@@ -132,7 +131,6 @@
             url: urlJoinNextPath,
             where: { curpath: $('#input-jmp-path').val() },
           });
-          ApiGetMarkdown();
         }
       });
 
@@ -146,7 +144,6 @@
           url: urlJoinNextPath,
           where: { curpath: obj.data.filefullpath },
         });
-        ApiGetMarkdown();
       });
 
       //监听行工具事件
