@@ -19,7 +19,7 @@ jobs:
 
       - name: Make All
         run: |
-          ./package.sh
+          ./script/package.sh
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
