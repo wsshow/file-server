@@ -7,6 +7,7 @@ import (
 	"file-server/router"
 	"file-server/utils"
 	"flag"
+	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
@@ -35,9 +36,16 @@ var tmpl embed.FS
 func main() {
 	InitLogConfig()
 	var uiPort, srvPort int
+	var bVersion bool
 	flag.IntVar(&uiPort, "up", 8080, "ui port")
 	flag.IntVar(&srvPort, "sp", 8081, "server port")
+	flag.BoolVar(&bVersion, "v", false, "version")
 	flag.Parse()
+
+	if bVersion {
+		fmt.Println("1.0.1")
+		return
+	}
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
