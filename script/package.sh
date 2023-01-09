@@ -6,7 +6,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-fileserver_version=$(./bin/fileserver --version)
+fileserver_version=$(./bin/fileserver -v)
 echo "build version: $fileserver_version"
 
 # cross_compiles
