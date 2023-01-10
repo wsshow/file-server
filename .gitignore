@@ -3,3 +3,4 @@ test
 *.log
 *.exe
 release
+dist
