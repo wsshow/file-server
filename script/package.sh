@@ -1,4 +1,5 @@
 # compile for version
+LDFLAGS := -s -w
 env CGO_ENABLED=0 go build -trimpath -ldflags "$(LDFLAGS)" -o bin/fileserver ./main.go
 
 if [ $? -ne 0 ]; then

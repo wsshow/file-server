@@ -1,0 +1,16 @@
+builds:
+  - skip: true
+checksum:
+  name_template: '{{ .ProjectName }}_sha256_checksums.txt'
+  algorithm: sha256
+  extra_files:
+    - glob: ./release/packages/*
+release:
+  github:
+    owner: wsshow
+    name: fileserver
+
+  draft: false
+
+  extra_files:
+    - glob: ./release/packages/*
