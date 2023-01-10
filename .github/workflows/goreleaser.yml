@@ -17,10 +17,13 @@ jobs:
         with:
           go-version: 1.19
 
-      - name: Make All
-        run: |
-          sudo chmod +x ./script/package.sh
-          sh ./script/package.sh
+#       - name: Make All
+#         run: |
+#           sudo chmod +x ./script/package.sh
+#           sh ./script/package.sh
+
+      - name: Fetch all tags
+        run: git fetch --force --tags
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
