@@ -1,16 +1,32 @@
+before:
+  hooks:
+    - go mod tidy
 builds:
-  - skip: true
-checksum:
-  name_template: '{{ .ProjectName }}_sha256_checksums.txt'
-  algorithm: sha256
-  extra_files:
-    - glob: ./release/packages/*
+  - env:
+      - CGO_ENABLED=0
+    main: .
+    ldflags: -s -w
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - '386'
+    goarm:
+      - '6'
 release:
   github:
     owner: wsshow
     name: fileserver
-
-  draft: false
-
-  extra_files:
-    - glob: ./release/packages/*
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: '{{ .Tag }}-next'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
