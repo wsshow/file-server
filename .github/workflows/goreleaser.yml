@@ -28,4 +28,4 @@ jobs:
           version: latest
           args: release --rm-dist --release-notes ./README.md
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
